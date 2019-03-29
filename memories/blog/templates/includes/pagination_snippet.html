@@ -5,9 +5,7 @@
             <li><a href="?page={{ page_obj.previous_page_number }}">向上</a></li>
         {% endif %}
 
-{#        <span class="current">#}
-            <li><a>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
-{#        </span>#}
+        <li><a>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
 
         {% if page_obj.has_next %}
             <li><a href="?page={{ page_obj.next_page_number }}">向下</a></li>
