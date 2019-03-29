@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block page-main %}
+    {% for article in articles %}
+    {% include 'includes/post_snippet.html' with changed=article.changed title=article.title tags=article.tag.all %}
+    {% empty %}
+        <p>抱歉，什么内容都没有……</p>
+    {% endfor %}
+
+    {% include 'includes/pagination_snippet.html' %}
+
+{% endblock %}

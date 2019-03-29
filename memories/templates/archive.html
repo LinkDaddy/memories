@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block page-main %}
+{% for date, articles in archive_dict.items %}
+    <h4 style="padding-bottom: 5px">{{ date.year }}</h4>
+    <ul>
+    {% for article in articles %}
+        <li style="padding: 10px 0 10px 10px;list-style-type: none;border-left: 1px solid #bbb;">
+            <span style="padding-right:.625em"><time>{{ article.created | date:"m-d" }}</time></span>
+            <a href="{% url 'detail' article.pk %}">
+                {{ article.title }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endfor %}
+{% endblock %}
