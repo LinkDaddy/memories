@@ -8,7 +8,6 @@ class ArticleForm(forms.ModelForm):
     """
     用于 Pagedown 扩展 admin 增加文章表单
     """
-    abstract = forms.CharField(widget=forms.Textarea())
     text = forms.CharField(widget=AdminPagedownWidget())
 
     class Meta:

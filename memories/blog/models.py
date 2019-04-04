@@ -1,30 +1,8 @@
 # -*- coding:utf8 -*-
 from django.db import models
-from django.db.models.fields.files import ImageFieldFile
-from django.conf import settings
-from PIL import Image
-import os
-
-
-def make_thumb(path, size=600):
-    """
-    上传图片生成缩略
-    """
-    image_buf = Image.open(path)
-    width, height = image_buf.size
-    if width > size:
-        delta = width / size
-        height = int(height / delta)
-        image_buf.thumbnail((size, height), Image.ANTIALIAS)
-        return image_buf
-
-
-def del_image(path):
-    """
-    删除配图
-    """
-    if os.path.isfile(path):
-        os.remove(path)
+from .fields import ThumbnailImageField
+from django.db.models.signals import pre_save, post_delete
+from django.dispatch import receiver
 
 
 class Tag(models.Model):
@@ -51,7 +29,6 @@ class Article(models.Model):
     )
     title = models.CharField(verbose_name=u"文章标题", max_length=256)
     tag = models.ManyToManyField(Tag, verbose_name=u'标签', blank=True)
-    abstract = models.CharField(verbose_name=u'文章摘要', max_length=256, blank=True)
     text = models.TextField(verbose_name=u"正文")
     status = models.CharField(verbose_name=u'状态', max_length=1, choices=_STATUS_CHOICES, default='p')
     created = models.DateTimeField(verbose_name=u"创建时间", auto_now_add=True)
@@ -60,52 +37,76 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
-    def delete(self):
-        """
-        删除文章的同时删除文件系统中相关图片
-        """
-        images_of_article = self.images.all()
-
-        if images_of_article:
-            for image_of_article in images_of_article:
-                del_image(os.path.join(settings.MEDIA_ROOT, image_of_article.image.name))
-                if image_of_article.thumb:
-                    del_image(os.path.join(settings.MEDIA_ROOT, image_of_article.thumb.name))
-            super().delete()
-        else:
-            super().delete()
-
     class Meta:
         verbose_name = u'文章'
         verbose_name_plural = u'文章'
+
+
+class Album(models.Model):
+    """
+    相册，用于文章配图分组。
+    """
+    name = models.CharField(verbose_name=u'相册名称', max_length=256)
+    remark = models.CharField(verbose_name=u'相册备注', max_length=512)
+    created = models.DateTimeField(verbose_name=u"创建时间", auto_now_add=True)
+    changed = models.DateTimeField(verbose_name=u"更新时间", auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = u'相册'
+        verbose_name_plural = u'相册'
 
 
 class ArticleImages(models.Model):
     """
     配图
     """
+    album = models.ForeignKey(Album, verbose_name=u'相册', related_name='photos', on_delete=models.CASCADE)
     article = models.ForeignKey(Article, verbose_name=u'文章', related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='uploads/%Y/%m/%d', verbose_name=u"配图", blank=True)
-    thumb = models.ImageField(upload_to='uploads/thumb_images', verbose_name=u"缩略图", blank=True)
+    title = models.CharField(verbose_name=u'标题', max_length=128, blank=True)
+    photo = ThumbnailImageField(verbose_name=u"照片", upload_to='uploads/photo/%Y/%m/%d', limit_height=600,
+                                limit_width=600)
     upload_time = models.DateTimeField(verbose_name=u"图片上传时间", auto_now_add=True)
+    like = models.IntegerField(verbose_name=u'点赞数', default=0)
 
     def __str__(self):
-        return u'%s %s' % (self.image.name, self.article.title)
+        return self.title
 
-    def save(self, *args, **kwargs):
-        """
-        存储数据同时生成图片缩略图
-        """
-        super().save()
-        base, ext = os.path.splitext(os.path.basename(self.image.path))
-        thumb_buf = make_thumb(self.image.path)
-        if thumb_buf:
-            relate_thumb_path = os.path.join('uploads/thumb_images', base + '.thumb' + ext)
-            thumb_path = os.path.join(settings.MEDIA_ROOT, relate_thumb_path)
-            thumb_buf.save(thumb_path)
-            self.thumb = ImageFieldFile(self, self.thumb, relate_thumb_path)
-            super().save()
+    @property
+    def thum_photo(self):
+        return self.photo.thumb_url
 
     class Meta:
-        db_table = "upload_images"
         verbose_name_plural = verbose_name = u"配图"
+
+
+@receiver(post_delete, sender=ArticleImages)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding `MediaFile` object is deleted.
+    """
+    if instance.photo:
+        instance.photo.delete(save=False)
+
+
+@receiver(pre_save, sender=ArticleImages)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `MediaFile` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = sender.objects.get(pk=instance.pk).photo
+    except sender.DoesNotExist:
+        return False
+
+    new_file = instance.photo
+    if not old_file == new_file:
+        old_file.delete(save=False)
