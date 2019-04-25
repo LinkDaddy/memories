@@ -1,4 +1,3 @@
-# -*- coding:utf8 -*-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,8 +25,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
     'pagedown',
     'blog',
+    'photoshow'
 ]
 
 MIDDLEWARE = [
@@ -112,4 +113,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 用于过滤器替换生成缩略图宽度，高度默认等比例压缩
+THUMBNAIL_FILTER_WIDTH = 600
 

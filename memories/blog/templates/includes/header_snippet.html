@@ -1,6 +1,23 @@
-<header>
-    <div id="site-logo" style="padding-top: 10px">
-        <img class="am-img-thumbnail am-circle am-center" src="/static/images/avatar.jpg" width="140" height="140"/>
+{% load static %}
+
+<header class="masthead" style="background: #58C9B9;">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="{{ style_class }}" style="padding: 100px 0 50px;">
+            {% if style_class == "site-heading" %}
+            <img src="{% static 'blog/img/avatar.jpg' %}" width="120" height="120" style="border-radius: 50%;overflow: hidden;border: 2px
+ solid #fff"/>
+            {% endif %}
+          <h2>{{ heading_text }}</h2><span class="subheading">{{ subheading_text }}</span>
+        {% if style_class == "post-heading" %}
+          <span class="meta">Posted by
+              <a href="{% url 'list' %}">LinkDaddy</a>
+              on {{ article.created | date:"Y-m-d" }}</span>
+        {% endif %}
+        </div>
+      </div>
     </div>
-    {% include 'includes/nav_snippet.html' %}
+  </div>
 </header>

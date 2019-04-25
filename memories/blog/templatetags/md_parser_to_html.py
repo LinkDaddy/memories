@@ -12,3 +12,4 @@ register = template.Library()
 @stringfilter
 def to_html(value):
     return mark_safe(markdown2.markdown(value, extras=["fenced-code-blocks"]))
+

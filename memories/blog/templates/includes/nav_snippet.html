@@ -1,8 +1,22 @@
-<div id="nav" style="text-align: center;padding: 1em 0;font-size: 1.6rem;">
-    <div id="nav-switch" style="margin-bottom: 10px;font-weight: 700;">
-        <a style="color: #555" href="{% url 'list' %}">最新文章</a><span class="am-footer-divider"> | </span>
-        <a style="color: #555" href="{% url 'timeline' %}">时间归档</a><span class="am-footer-divider"> | </span>
-{#        <a style="color: #555" href="">标签归档</a><span class="am-footer-divider"> | </span>#}
-        <a style="color: #555" href="">又来看我爸爸</a>
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'list' %}">LinkDaddy</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'list' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'timeline' %}">Archive</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About</a>
+        </li>
+      </ul>
     </div>
-</div>
+  </div>
+</nav>

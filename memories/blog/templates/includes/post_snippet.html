@@ -1,19 +1,14 @@
-<div class="post-preview">
-    <div class="post-time">
-        {{ changed | date:"Y-m-d"}}
+{% load md_parser_to_html %}
+
+{% load thumbnail %}
+<article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {{ article.text | markdown_thumbnails | md_to_html }}
+        </div>
+      </div>
     </div>
-    <div class="post-info">
-        <a href="{% url 'detail' article.id %}">
-            <h3>
-                {{ title }}
-            </h3>
-        </a>
-        <p>
-            {% for tag in tags %}
-                <span>/</span>
-                <a class="tag" href="#" title="#">{{ tag.name }}</a>
-                <span>/</span>
-            {% endfor %}
-        </p>
-    </div>
-</div>
+</article>
+
+<hr>

@@ -1,0 +1,42 @@
+{% load static %}
+{% load thumbnail %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Photo Show</title>
+    <link rel="stylesheet" href="{% static '/photoshow/css/blueimp-gallery.min.css' %}">
+</head>
+<body style="max-width: 750px;margin: 0 auto;background: #404040;">
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+    <h2 style="text-align: center;color: #eeeeee">LinkDaddy's image gallery</h2>
+    <div id="links" class="image-gallery links">
+      {% for photo in photos %}
+          {% thumbnail photo.photo "200x200" crop="center" as ph %}
+              <a href="{{ photo.photo.url }}" title="{{ photo.title }}" style="text-decoration:none">
+                  <img src="{{ ph.url }}" width="{{ ph.width }}" height="{{ ph.height }}" alt="{{ ph.title }}">
+              </a>
+          {% endthumbnail %}
+      {% endfor %}
+    </div>
+    <script src="{% static '/photoshow/js/blueimp-gallery.min.js' %}"></script>
+    <script>
+      document.getElementById('links').onclick = function (event) {
+          event = event || window.event;
+          var target = event.target || event.srcElement,
+              link = target.src ? target.parentNode : target,
+              options = {index: link, event: event},
+              links = this.getElementsByTagName('a');
+          blueimp.Gallery(links, options);
+      };
+    </script>
+</body>
+</html>

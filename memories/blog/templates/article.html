@@ -3,18 +3,12 @@
 {# 引入 自定义 markdown 解析模版标签过滤器 #}
 {% load md_parser_to_html %}
 
-{% block page-main %}
-    <article class="am-article">
-        <div class="am-article-hd">
-            <h2 class="am-article-title">{{ article.title }}</h2>
-            <p class="am-article-meta">{{ article.changed }}</p>
-            {% if article.tag.all %}
-            <p style="font-weight: 300;color: #999999;font-size: 14px;">/{% for tag in article.tag.all %}{{ tag.name }}/{% endfor %}</p>
-            {% endif %}
-        </div>
-        <hr class="am-divider am-divider-default" />
-        <div class="am-article-bd">
-            {{ article.text | md_to_html }}
-        </div>
-    </article>
+{% load thumbnail %}
+
+{% block header %}
+    {% include 'includes/header_snippet.html' with style_class="post-heading" heading_text=article.title subheading_text='' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'includes/post_snippet.html' %}
 {% endblock %}

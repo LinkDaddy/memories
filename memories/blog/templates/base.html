@@ -1,46 +1,53 @@
-<!doctype html>
-<html class="no-js">
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1">
-    <title>{{ site_title }}</title>
 
-    <!-- Set render engine for 360 browser -->
-    <meta name="renderer" content="webkit">
-    <!-- No Baidu Siteapp-->
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+  <title>linkdaddy</title>
 
-    <!-- Add to homescreen for Chrome on Android -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="/static/images/app-icon72x72@2x.png">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
 
-    <!-- Add to homescreen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="apple-touch-icon-precomposed" href="/static/images/app-icon72x72@2x.png">
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'blog/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-    <!-- Tile icon for Win8 (144x144 + tile color) -->
-    <meta name="msapplication-TileImage" content="/static/images/app-icon72x72@2x.png">
-    <meta name="msapplication-TileColor" content="#0e90d2">
+  <!-- Custom styles for this template -->
+  <link href="{% static 'blog/css/clean-blog.min.css' %}" rel="stylesheet">
 
-    <link rel="stylesheet" href="/static/css/amazeui.min.css">
-    <link rel="stylesheet" href="/static/css/app.css">
 </head>
 
 <body>
-    {% include 'includes/header_snippet.html' %}
 
-    <div class="am-container" style="max-width: 600px">
-        {% block page-main %}{% endblock %}
-    </div>
-    <!-- Footer -->
-    {% include 'includes/footer_snippet.html' %}
+  <!-- Navigation -->
+  {% include 'includes/nav_snippet.html' %}
+
+  <!-- Page Header -->
+  {% block header %}
+  {% include 'includes/header_snippet.html' with style_class="site-heading" heading_text="Link's Daddy" subheading_text="The young at heart" %}
+  {% endblock %}
+  <!-- Main Content -->
+  {% block content %}
+  {% endblock %}
+
+  <!-- Footer -->
+  {% include 'includes/footer_snippet.html' %}
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'blog/js/jquery.min.js' %}"></script>
+  <script src="{% static 'blog/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'blog/js/clean-blog.min.js' %}"></script>
+
 </body>
+
 </html>

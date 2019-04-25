@@ -1,7 +1,9 @@
 # -*- coding:utf8 -*-
 from django.views.generic import ListView, DetailView
-from blog.models import Tag, Article
+from blog.models import Article
 from collections import OrderedDict
+from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class GlobalContextMixin(object):
@@ -12,13 +14,10 @@ class GlobalContextMixin(object):
         """
         添加站点信息
         """
-        # context = super(GlobalContextMixin, self).get_context_data(**kwargs)
         context = super().get_context_data(**kwargs)
         article_count = Article.objects.count()
-        tag_count = Tag.objects.count()
 
         context.setdefault('article_count', article_count)
-        context.setdefault('tag_count', tag_count)
 
         return context
 
@@ -27,23 +26,29 @@ class ArticlesView(GlobalContextMixin, ListView):
     """
     文章列表
     """
-    queryset = Article.objects.filter(status='p').exclude(title="About")
+    queryset = Article.objects.filter(status='1').exclude(title="About")
     model = Article
     ordering = ('-created',)
     context_object_name = 'articles'
 
-    template_name = 'articles.html'
-    paginate_by = 2
+    template_name = 'index.html'
+    paginate_by = 5
 
 
 class ArticleView(GlobalContextMixin, DetailView):
     """
     文章详情
     """
-    # queryset = Article.objects.all()
     model = Article
     context_object_name = "article"
     template_name = "article.html"
+
+    def get_object(self, queryset=None):
+        obj = super().get_object()
+
+        if obj.status != '1':
+            raise Http404("抱歉没有对应的内容。")
+        return obj
 
 
 class DateArchiveView(GlobalContextMixin, ListView):
@@ -60,9 +65,23 @@ class DateArchiveView(GlobalContextMixin, ListView):
 
         archive_dict = OrderedDict()
         for date in dates:
-            articles = Article.objects.filter(status='p', created__year=date.year).exclude(title="About")
+            articles = Article.objects.filter(status='o', created__year=date.year).exclude(title="About")
             archive_dict.setdefault(date, articles)
 
         context.setdefault('archive_dict', archive_dict)
         return context
 
+
+class About(DetailView):
+    """
+    关于我
+    """
+    template_name = 'article.html'
+
+    def get_object(self, queryset=Article.objects.all()):
+        try:
+            obj = queryset.get(title="About")
+        except ObjectDoesNotExist:
+            raise Http404("博主很懒，什么也没有写。")
+
+        return obj

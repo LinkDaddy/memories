@@ -1,15 +1,8 @@
-<div class="pagination" style="display: flex;justify-content: center;">
-    <ul class="am-pagination">
-        {% if page_obj.has_previous %}
-            <li><a href="?page=1">开始</a></li>
-            <li><a href="?page={{ page_obj.previous_page_number }}">向上</a></li>
-        {% endif %}
-
-        <li><a>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
-
-        {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}">向下</a></li>
-            <li><a href="?page={{ page_obj.paginator.num_pages }}">最后</a></li>
-        {% endif %}
-    </ul>
+{% if page_obj.has_previous %}
+    <a class="btn btn-primary float-left" href="?page={{ page_obj.previous_page_number }}">&larr; Newer Posts</a>
+{% endif %}
+{% if page_obj.has_next %}
+<div class="clearfix">
+    <a class="btn btn-primary float-right" href="?page={{ page_obj.next_page_number }}">Older Posts &rarr;</a>
 </div>
+{% endif %}
