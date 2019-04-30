@@ -5,7 +5,7 @@ from photoshow.admin import PhotoInlineAdmin
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    fields = (('title', 'status', 'changed'), 'text')
+    fields = (('title', 'status', 'changed'), 'content')
     readonly_fields = ('changed',)
     list_display = ('title', 'created', 'changed', 'status')
     list_filter = ('created', 'changed')

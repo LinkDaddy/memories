@@ -4,7 +4,7 @@ from blog.models import Article
 from collections import OrderedDict
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.shortcuts import get_object_or_404
 
 class GlobalContextMixin(object):
     """
@@ -65,7 +65,7 @@ class DateArchiveView(GlobalContextMixin, ListView):
 
         archive_dict = OrderedDict()
         for date in dates:
-            articles = Article.objects.filter(status='o', created__year=date.year).exclude(title="About")
+            articles = Article.objects.filter(status='1', created__year=date.year).exclude(title="About")
             archive_dict.setdefault(date, articles)
 
         context.setdefault('archive_dict', archive_dict)
@@ -79,9 +79,4 @@ class About(DetailView):
     template_name = 'article.html'
 
     def get_object(self, queryset=Article.objects.all()):
-        try:
-            obj = queryset.get(title="About")
-        except ObjectDoesNotExist:
-            raise Http404("博主很懒，什么也没有写。")
-
-        return obj
+        return get_object_or_404(queryset, title="About")
