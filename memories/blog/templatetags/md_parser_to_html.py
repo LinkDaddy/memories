@@ -11,5 +11,5 @@ register = template.Library()
 @register.filter(name='md_to_html', is_safe=True)
 @stringfilter
 def to_html(value):
-    return mark_safe(markdown2.markdown(value, extras=["fenced-code-blocks"]))
+    return mark_safe(markdown2.markdown(value, extras=["code-friendly", "fenced-code-blocks"]))
 
