@@ -79,4 +79,4 @@ class About(DetailView):
     template_name = 'article.html'
 
     def get_object(self, queryset=Article.objects.all()):
-        return get_object_or_404(queryset, title="About")
+        return get_object_or_404(queryset, title="About", status='1')

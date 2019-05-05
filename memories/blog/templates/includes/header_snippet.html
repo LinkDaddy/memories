@@ -1,6 +1,6 @@
 {% load static %}
 
-<header class="masthead" style="background: #58C9B9;">
+<header class="masthead" style="background: #a3daff;">
   <div class="overlay"></div>
   <div class="container">
     <div class="row">
@@ -12,9 +12,7 @@
             {% endif %}
           <h2>{{ heading_text }}</h2><span class="subheading">{{ subheading_text }}</span>
         {% if style_class == "post-heading" %}
-          <span class="meta">Posted by
-              <a href="{% url 'list' %}">LinkDaddy</a>
-              on {{ article.created | date:"Y-m-d" }}</span>
+          <span class="meta">Posted by Link's Daddy on {{ article.created | date:"Y-m-d" }} &middot; Last updated in {{ article.changed | date:"Y-m-d"}}</span>
         {% endif %}
         </div>
       </div>

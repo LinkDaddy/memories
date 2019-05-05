@@ -1,0 +1,29 @@
+/*
+ * 自定义样式
+ *
+ */
+
+.post-preview>a>.post-title {
+    font-size: 20px;
+}
+
+@media only screen and (min-width: 768px){
+    .post-preview>a>.post-title {
+        font-size: 26px;
+    }
+}
+
+.post-preview>a {
+    color: #3e4149;
+}
+
+
+article img {
+    max-width: 100%;
+    height: auto;
+    padding: .25rem;
+    border: 1px solid #dee2e6;
+}
+
+/* 代码高亮设置 边距*/
+.codehilite pre { margin: 5px }

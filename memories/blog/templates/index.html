@@ -5,12 +5,11 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
           {% for article in articles %}
-              {% include 'includes/post_preview_snippet.html' with changed=article.changed title=article.title %}
+              {% include 'includes/post_preview_snippet.html' with created=article.created changed=article.changed title=article.title %}
           {% endfor %}
           <!-- Pager -->
           {% include 'includes/pagination_snippet.html' %}
     </div>
   </div>
-  <hr>
 </div>
 {% endblock %}
