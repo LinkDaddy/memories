@@ -3,6 +3,8 @@
  *
  */
 
+
+/* post-preview 相关 */
 .post-preview>a>.post-title {
     font-size: 20px;
 }
@@ -17,13 +19,8 @@
     color: #3e4149;
 }
 
-
-article img {
-    max-width: 100%;
-    height: auto;
-    padding: .25rem;
-    border: 1px solid #dee2e6;
+/* 代码块 */
+.codehilite pre {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
 }
-
-/* 代码高亮设置 边距*/
-.codehilite pre { margin: 5px }
