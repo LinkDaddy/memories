@@ -2,7 +2,5 @@
 *.sqlite3
 memories/.idea
 avatar.jpg
-memories/blog/templates/includes/post_snippet.html
-memories/blog/templates/includes/post_comment_plugin_snippet.html
 memories/media/*
 memories/static/*
